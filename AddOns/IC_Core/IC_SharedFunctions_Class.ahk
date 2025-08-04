@@ -84,8 +84,10 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
     TotalGems := 0
     TotalSilverChests := 0
     TotalGoldChests := 0
-
-    __new()
+	ResetStatsLog := A_LineFile . "\..\..\..\..\log-reset.csv"
+    PreviousResetTicks := 0
+  
+  __new()
     {
         this.Memory := New IC_MemoryFunctions_Class(A_LineFile . "\..\MemoryRead\CurrentPointers.json")
     }
