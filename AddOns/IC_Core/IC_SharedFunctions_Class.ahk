@@ -105,7 +105,6 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
     ; returns this class's version information (string)
     GetVersion()
     {
-        return "v3.0.2, 2025-08-01"
         return "v3.0.3, 2025-08-09"
     }
 
@@ -1311,7 +1310,6 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
         {
             if ( v != -1 )
             {
-                hasSeatUpgrade := this.Memory.ReadBoughtLastUpgrade(this.Memory.ReadChampSeatByID(v))
                 hasSeatUpgrade := this.Memory.ReadBoughtLastUpgradeBySeat(this.Memory.ReadChampSeatByID(v))
                 if (!hasSeatUpgrade)
                     return false
