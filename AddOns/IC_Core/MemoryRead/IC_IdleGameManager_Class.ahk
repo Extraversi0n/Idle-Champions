@@ -14,10 +14,9 @@
 
 class IC_IdleGameManager_Class extends SH_MemoryPointer
 {
-
     GetVersion()
     {
-        return "v2.1.1, 2025-08-03"
+        return "v2.1.3, 2025-08-11"
     }
 
     Refresh()
@@ -26,27 +25,30 @@ class IC_IdleGameManager_Class extends SH_MemoryPointer
         ;==================
         ;structure pointers
         ;==================
-        this.BaseAddress := _MemoryManager.baseAddress["mono-2.0-bdwgc.dll"]+this.ModuleOffset
-        if (this.Is64Bit != _MemoryManager.is64Bit) ; Build structure one time. 
+        baseAddress := _MemoryManager.baseAddress["mono-2.0-bdwgc.dll"]+this.ModuleOffset
+        if (_MemoryManager.is64bit == "") ; Don't build offsets if no client is available to check variable types.
+            return
+        if (this.BasePtr.BaseAddress != baseAddress) ; OR this.Is64Bit != _MemoryManager.is64bit) (in case 32 bit returns)
         {
+            this.BasePtr.BaseAddress := baseAddress
             this.Is64Bit := _MemoryManager.is64bit
             ; Note: Using example Offsets 0xCB0,0 from CE, 0 is a mod (+) and disappears leaving just 0xCB0
             ; this.StructureOffsets[1] += 0x10
-            if (this.IdleGameManager == "")  ; first run - Build objects
+            if (this.IdleGameManager == "") ; OR resetThis)  ; first run - Build objects OR 32bit switch
             {
                 this.IdleGameManager := New GameObjectStructure(this.StructureOffsets)
-                this.IdleGameManager.BasePtr := new SH_BasePtr(this.BaseAddress, this.ModuleOffset, this.StructureOffsets)
+                this.IdleGameManager.BasePtr := new SH_BasePtr(this.BasePtr.BaseAddress, this.ModuleOffset, this.StructureOffsets, "IdleGameManager")
                 this.IdleGameManager.Is64Bit := _MemoryManager.is64bit
                 ; Build offsets for class using imported AHK files.
                 #include *i %A_LineFile%\..\Imports\IC_IdleGameManager64_Import.ahk
                 ; DEBUG: Enable this line to be able to view the variable name of the GameObject. (e.g. this.game would have a GSOName variable that says "game" )
                 ; this.game.SetNames()
+                return
             }
-            else ; Objects exist, update memory addresses only
-            {
-                this.IdleGameManager.BasePtr := new SH_BasePtr(this.BaseAddress, this.ModuleOffset, this.StructureOffsets)
-                this.IdleGameManager.ResetBasePtr(this.IdleGameManager)
-            }
+            ; Objects exist, update memory addresses only
+            ; Note: Once imports have been built, IdleGameManager is no longer used for GameObjects. Structure builds from this -> this.game, NOT this.IdleGameManager.game
+            this.IdleGameManager.BasePtr := new SH_BasePtr(this.BasePtr.BaseAddress, this.ModuleOffset, this.StructureOffsets)
+            this.ResetBasePtr(this.IdleGameManager)
         }
     }
 }

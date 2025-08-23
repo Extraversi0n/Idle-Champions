@@ -85,9 +85,15 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
     TotalSilverChests := 0
     TotalGoldChests := 0
 	ResetStatsLog := A_LineFile . "\..\..\..\..\log-reset.csv"
+<<<<<<< HEAD
     PreviousResetTicks := 0
   
   __new()
+=======
+     PreviousResetTicks := 0
+
+    __new()
+>>>>>>> revertBranch
     {
         this.Memory := New IC_MemoryFunctions_Class(A_LineFile . "\..\MemoryRead\CurrentPointers.json")
     }
@@ -100,6 +106,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
     GetVersion()
     {
         return "v3.0.2, 2025-08-01"
+        return "v3.0.3, 2025-08-09"
     }
 
     ;Takes input of first and second sets of eight byte int64s that make up a quad in memory. Obviously will not work if quad value exceeds double max.
@@ -1305,6 +1312,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
             if ( v != -1 )
             {
                 hasSeatUpgrade := this.Memory.ReadBoughtLastUpgrade(this.Memory.ReadChampSeatByID(v))
+                hasSeatUpgrade := this.Memory.ReadBoughtLastUpgradeBySeat(this.Memory.ReadChampSeatByID(v))
                 if (!hasSeatUpgrade)
                     return false
             }

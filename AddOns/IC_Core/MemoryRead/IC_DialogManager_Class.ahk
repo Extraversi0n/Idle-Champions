@@ -5,14 +5,17 @@ class IC_DialogManager_Class extends SH_MemoryPointer
 {
     GetVersion()
     {
-        return "v2.1.1, 2025-08-03"
+        return "v2.1.3, 2025-08-11"
     }
 
     Refresh()
-    {
-        this.BaseAddress := _MemoryManager.baseAddress["mono-2.0-bdwgc.dll"]+this.ModuleOffset
-        if (this.Is64Bit != _MemoryManager.is64Bit) ; Build structure one time. 
+    {        
+        if (_MemoryManager.is64bit == "") ; Don't build offsets if no client is available to check variable types.
+            return
+        baseAddress := _MemoryManager.baseAddress["mono-2.0-bdwgc.dll"]+this.ModuleOffset
+        if (this.BasePtr.BaseAddress != baseAddress)
         {
+            this.BasePtr.BaseAddress := baseAddress
             this.Is64Bit := _MemoryManager.is64bit
             if (this.UnityGameEngine == "")
             {
@@ -22,15 +25,13 @@ class IC_DialogManager_Class extends SH_MemoryPointer
                 ; structureOffsetsOverlay[1] += 0x10 ; for myself (Steam only)
                 offsets := (this.HasOverlay() AND _MemoryManager.is64Bit) ? structureOffsetsOverlay : this.StructureOffsets
                 this.UnityGameEngine.Dialogs.DialogManager := new GameObjectStructure(offsets)
-                this.UnityGameEngine.Dialogs.DialogManager.BasePtr := new SH_BasePtr(this.BaseAddress, this.ModuleOffset, this.StructureOffsets)
+                this.UnityGameEngine.Dialogs.DialogManager.BasePtr := new SH_BasePtr(this.BasePtr.BaseAddress, this.ModuleOffset, this.StructureOffsets)
                 this.UnityGameEngine.Dialogs.DialogManager.Is64Bit := _MemoryManager.is64Bit
                 #include *i %A_LineFile%\..\Imports\IC_DialogManager64_Import.ahk
+                return
             }
-            else
-            {
-                this.UnityGameEngine.Dialogs.DialogManager.BasePtr := new SH_BasePtr(this.BaseAddress, this.ModuleOffset, this.StructureOffsets)
-                this.UnityGameEngine.Dialogs.DialogManager.ResetBasePtr(this.UnityGameEngine.Dialogs.DialogManager)
-            }
+            this.UnityGameEngine.Dialogs.DialogManager.BasePtr := new SH_BasePtr(this.BasePtr.BaseAddress, this.ModuleOffset, this.StructureOffsets, "DialogManager")
+            this.ResetBasePtr(this.UnityGameEngine.Dialogs.DialogManager)
         }
     }
 

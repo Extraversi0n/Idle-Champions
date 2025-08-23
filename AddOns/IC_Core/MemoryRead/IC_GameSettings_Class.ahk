@@ -3,28 +3,29 @@ class IC_GameSettings_Class extends SH_StaticMemoryPointer
 {
     GetVersion()
     {
-        return "v2.1.1, 2025-08-03"
+        return "v2.1.3, 2025-08-11"
     }
 
     Refresh()
-    {
-        this.BaseAddress := _MemoryManager.baseAddress["mono-2.0-bdwgc.dll"]+this.ModuleOffset
-        if (this.Is64Bit != _MemoryManager.is64Bit) ; Build structure one time. 
+    {        
+        if (_MemoryManager.is64bit == "") ; Don't build offsets if no client is available to check variable types.
+            return
+        baseAddress := _MemoryManager.baseAddress["mono-2.0-bdwgc.dll"]+this.ModuleOffset
+        if (this.BasePtr.BaseAddress != baseAddress)
         {
+            this.BasePtr.BaseAddress := baseAddress
             this.Is64Bit := _MemoryManager.is64bit
             if (this.CrusadersGame == "")
             {
                 this.CrusadersGame := {}
                 this.CrusadersGame.GameSettings := new GameObjectStructure(this.StructureOffsets)
-                this.CrusadersGame.GameSettings.BasePtr := new SH_BasePtr(this.BaseAddress, this.ModuleOffset, this.StructureOffsets)
+                this.CrusadersGame.GameSettings.BasePtr := new SH_BasePtr(this.BasePtr.BaseAddress, this.ModuleOffset, this.StructureOffsets)
                 this.CrusadersGame.GameSettings.Is64Bit := _MemoryManager.is64Bit
                 #include *i %A_LineFile%\..\Imports\IC_GameSettings64_Import.ahk
+                return
             }
-            else
-            {
-                this.CrusadersGame.GameSettings.BasePtr := new SH_BasePtr(this.BaseAddress, this.ModuleOffset, this.StructureOffsets)
-                this.CrusadersGame.GameSettings.ResetBasePtr(this.CrusadersGame.GameSettings)
-            }
+            this.CrusadersGame.GameSettings.BasePtr := new SH_BasePtr(this.BasePtr.BaseAddress, this.ModuleOffset, this.StructureOffsets, "GameSettings")
+            this.ResetBasePtr(this.CrusadersGame.GameSettings)
         }
     }
 }
