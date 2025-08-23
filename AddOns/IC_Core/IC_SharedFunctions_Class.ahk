@@ -99,7 +99,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
     ; returns this class's version information (string)
     GetVersion()
     {
-        return "v3.0.1, 2025-07-02"
+        return "v3.0.3, 2025-08-09"
     }
 
     ;Takes input of first and second sets of eight byte int64s that make up a quad in memory. Obviously will not work if quad value exceeds double max.
@@ -358,7 +358,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
         this.LevelChampByID( 47, 230, 7000, "{q}") ; level shandie
         ; Make sure the ability handler has the correct base address.
         ; It can change on game restarts or modron resets.
-        this.Memory.ActiveEffectKeyHandler.Refresh()
+        this.Memory.ActiveEffectKeyHandler.Refresh(ActiveEffectKeySharedFunctions.Shandie.TimeScaleWhenNotAttackedHandler.EffectKeyString)
         StartTime := A_TickCount
         ElapsedTime := 0
         timeScale := this.Memory.ReadTimeScaleMultiplier()
@@ -407,7 +407,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
         if(ActiveEffectKeySharedFunctions.Shandie.TimeScaleWhenNotAttackedHandler.ReadDashActive())
             return true
         else if (!this.Memory.ActiveEffectKeyHandler.TimeScaleWhenNotAttackedHandler.BaseAddress)
-            this.Memory.ActiveEffectKeyHandler.Refresh()
+            this.Memory.ActiveEffectKeyHandler.Refresh(ActiveEffectKeySharedFunctions.Shandie.TimeScaleWhenNotAttackedHandler.EffectKeyString)
         return false
     }
 
@@ -1304,7 +1304,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
         {
             if ( v != -1 )
             {
-                hasSeatUpgrade := this.Memory.ReadBoughtLastUpgrade(this.Memory.ReadChampSeatByID(v))
+                hasSeatUpgrade := this.Memory.ReadBoughtLastUpgradeBySeat(this.Memory.ReadChampSeatByID(v))
                 if (!hasSeatUpgrade)
                     return false
             }
