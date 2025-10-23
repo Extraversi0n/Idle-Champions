@@ -1,3 +1,5 @@
+#include %A_LineFile%\..\..\..\SharedFunctions\CLR.ahk
+
 class IC_BrivGemFarm_Stats_Component
 {
     static SettingsPath := A_LineFile . "\..\Stats_Settings.json"
@@ -272,6 +274,7 @@ class IC_BrivGemFarm_Stats_Component
         static hasteStackMessage := ""
         static LastTriggerStart := false
         static foundComs := True
+        static lastSBStacks := ""
 
         Critical, On
         ; ============== Read Coms ===================
@@ -281,9 +284,13 @@ class IC_BrivGemFarm_Stats_Component
             TriggerStart := LastTriggerStart, foundComs := False
         if(foundComs)
         {
-            if (InStr(this.SharedRunData.LastCloseReason, "Check Stack Settings") && this.PreviousLastGameCloseReason != this.SharedRunData.LastCloseReason)
+            sbStacks := g_SF.Memory.ReadSBStacks()
+            if (lastSBStacks == "")
+                lastSBStacks := sbStacks 
+            if (InStr(this.SharedRunData.LastCloseReason, "Check Stack Settings") && this.PreviousLastGameCloseReason != this.SharedRunData.LastCloseReason && lastSBStacks == sbStacks )
             {
                 g_BrivUserSettings[ "RestartStackTime" ] += 10
+                lastSBStacks := sbStacks
                 GuiControl, ICScriptHub:, NewRestartStackTime, % g_BrivUserSettings[ "RestartStackTime" ]
                 IC_BrivGemFarm_Component.Briv_Save_Clicked()
             }
@@ -329,7 +336,7 @@ class IC_BrivGemFarm_Stats_Component
         static foundComs := True
         Critical, On
         try ; test, set
-            foundComs := this.SharedRunData.StackFail, foundComs := True ; set flag
+            foundComs := this.SharedRunData.SharedDataTest ; set flag, var should always be true
         catch err
             foundComs := False
         this.StatsRunsCount += 1
@@ -349,7 +356,8 @@ class IC_BrivGemFarm_Stats_Component
 
     UpdateMemoryUsage()
     {
-        GuiControl, ICScriptHub:, SH_Memory_In_Use, % g_SF.GetProcessMemoryUsage() . "MB"
+         ;g_SF.GetProcessMemoryUsage() . "MB"
+        GuiControl, ICScriptHub:, SH_Memory_In_Use, % this.GetMemWorkingset()
     }
 
     UpdateStartLoopStatsReset(foundComs, resetsCount)
@@ -849,5 +857,35 @@ class IC_BrivGemFarm_Stats_Component
             }
         }
         return madeEdit
+    }
+
+    GetMemWorkingset()
+    {
+        memoryAmount := ""
+        cSharp =
+        (
+            using System;
+            using System.Diagnostics;
+
+            class ICMemCounter {
+                public string GetMem(int procID) {
+                    string prcName = Process.GetProcessById(procID).ProcessName;
+                    var counter = new PerformanceCounter("Process", "Working Set", prcName);
+                    return (counter.RawValue / 1048576).ToString() + "MB";
+                }
+            }
+        )
+
+        procID := DllCall("GetCurrentProcessId")
+        memObj := CLR_CreateObject( CLR_CompileC#( cSharp, "System.dll" ), "ICMemCounter")
+        try
+        {
+            memoryAmount := memObj.GetMem(procID)
+        }
+        catch except
+        {
+            throw except
+        }
+        return memoryAmount
     }
 }
