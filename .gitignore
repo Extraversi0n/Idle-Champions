@@ -16,3 +16,6 @@ AddOns/*_Addon_Management/AddonManagement.json
 LastGUID*.json
 Current*.json
 SharedFunctions/ScanCodesOverride.json
+mklink-default.txt
+mklink-default.bat
+*\IC_Core\MemoryRead\Imports
