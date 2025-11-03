@@ -1,13 +1,29 @@
 # IC Script Hub
-## ``New: v4.4.3 - 2025-10-19:``
-**Important**: This update requires updated addons for them to function properly. I have converted ImpEGamer's and Emmote's to function with the new version and they can be found at [https://github.com/antilectual/IC_Addons-1/tree/Anti-Changes](https://github.com/antilectual/IC_Addons-1/tree/Anti-Changes) (for ImpEGamer's like Levelup) and [https://github.com/antilectual/IC_Addons-2/tree/Anti-Changes](https://github.com/antilectual/IC_Addons-2/tree/Anti-Changes) for Emmote's (until I complete a pull request).
+## ``News: ``
+``4.4.6 - 2025-11-03``
+**Welcome** to Script Hub's new home!
+
+``git remote set-url origin <new url>`` is your friend.
+
+It has been a long time but I think it's time I bring the script over to my profile so I can have better control over the repository. My updates to Script Hub will be made here from now on. Thanks for your support!
+
+ The following notice's statements are still true. Emmote's addons have returned to her own repository again. Imp's are still in the IC_Addon-1 repository on *this* Github profile as linked below. LevelUp addon is still required to function but many addons in the repositories linked are highly recommended.
+
+I have included a batch file to help the transition of connecting most common addons (and mine) to the main script easier if inot ousing the remote origin change. It is [here](https://github.com/antilectual/Idle-Champions/tree/main/mklink-default.txt). Just edit it to use the directories you personally use, rename it .bat, and run to link the addons into Script Hub. I recommend having the script and addons downloaded through Github desktop (or other git client) to make keeping them updated easier.
+
+***Note***: Settings that may need to be re-updated - BrivGemFarm, Theme Manager, and Addon Management (Re-enabling the addons). Copying settings from previous versions should work fine also. Settings from addons should remain if properly using the junctions (mklink file).
+  
+ ## 
+  
+``v4.4.3 - 2025-10-19:``
+**Important**: This update requires updated addons for them to function properly. I have converted ImpEGamer's and Emmote's to function with the new version and they can be found at [https://github.com/antilectual/IC_Addons-1/tree/Anti-Changes](https://github.com/antilectual/IC_Addons-1/tree/Anti-Changes) (for ImpEGamer's like Levelup) and [https://github.com/Emmote/IC_Addons](https://github.com/Emmote/IC_Addons) for Emmote's (until I complete a pull request).
 
 ##
 2025-08-02:  
 
 Added important [imports](#imports) section. Please read it before running IC Script Hub.
 
-As of game version 629, due to changes with hotkeys the [LevelUp](https://github.com/imp444/IC_Addons/tree/main/IC_BrivGemFarm_LevelUp_Extra) addon is required to run smoothly. Refer to [Addons.md](Addons.md) for links to more commonly used addons.
+As of game version 629, due to changes with hotkeys the [LevelUp](https://github.com/antilectual/IC_Addons-1/tree/Anti-Changes/IC_BrivGemFarm_LevelUp_Extra) addon is required to run smoothly. Refer to [Addons.md](Addons.md) for links to more commonly used addons.
 
 ---  
 ## Introduction

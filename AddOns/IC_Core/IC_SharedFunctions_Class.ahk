@@ -63,7 +63,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
     ; returns this class's version information (string)
     GetVersion()
     {
-        return "v3.0.8, 2025-11-01"
+        return "v3.0.9, 2025-11-03"
     }
 
     ;Takes input of first and second sets of eight byte int64s that make up a quad in memory. Obviously will not work if quad value exceeds double max.
@@ -281,7 +281,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
 
         Returns: nothing
     */
-    WaitForTransition( spam := "", maxLoopTime := 5000 )
+    WaitForTransition( spam := "", maxLoopTime := 3500 )
     {
         if !this.Memory.ReadTransitioning()
             return
@@ -575,13 +575,15 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
 
     DoSwitchFormation(favoriteNum)
     {
+        Critical, On
         if(favoriteNum == 1)
             this.DirectedInput(,,["{q}"]*) 
         else if(favoriteNum == 2)
             this.DirectedInput(,,["{w}"]*) 
         else if(favoriteNum == 3)
             this.DirectedInput(,,["{e}"]*) 
-        IC_BrivGemFarm_Class.BrivFunctions.HasSwappedFavoritesThisRun := True            
+        IC_BrivGemFarm_Class.BrivFunctions.HasSwappedFavoritesThisRun := True
+        Critical, Off
     }
 
     ; True/False on whether Briv should be benched based on game conditions. (typically swap to E formation)
