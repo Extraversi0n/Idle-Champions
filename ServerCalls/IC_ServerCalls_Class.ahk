@@ -38,7 +38,7 @@ class IC_ServerCalls_Class extends SH_ServerCalls
         this.userHash := userHash
         this.instanceID := instanceID
         this.shinies := 0
-        this.LoadSettings()
+        this.LoadSettings(A_LineFile . "\..\ServerCall_Settings.json")
         return this
     }
 

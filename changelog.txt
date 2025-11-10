@@ -1,3 +1,16 @@
+November 9, 2025
+    Fixed issue with servercalls that could prevent non-BrivGemFarm scripts from using it without a proxy in settings.json.
+    Added an extra test when restarting the game to recheck if a game has opened and closed and reopened during a restart.
+    Removed most old pointers from the Pointer Version Picker.
+    Fixed two issues in logic when restarting game.
+
+November 6, 2025
+    Added example MKLink file to repo.
+    Updated Readme.md.
+    Added user settings for TabControlHeight and TabControlWidth.
+    Fixed connect button not connecting.
+    Fixed addon management not maintaining proper ordering. (May require reordering addons after update, but restrictions now enforced properly when moving them)
+
 November 3, 2025
     Updated how formation checks are done, especially around stacking formations.
     Compromise between speed and accuracy.
