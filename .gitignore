@@ -18,4 +18,5 @@ Current*.json
 SharedFunctions/ScanCodesOverride.json
 mklink-default.txt
 mklink-default.bat
-*\IC_Core\MemoryRead\Imports
+*/IC_Core/MemoryRead/Imports/
+Images/meowtoid.png

@@ -1,6 +1,6 @@
 #include %A_LineFile%\..\..\..\SharedFunctions\CLR.ahk
 
-global g_EmStatsImage := A_LineFile . "\..\..\..\Images\EmStats.png"
+global g_EmStatsImage := A_LineFile . "\..\..\..\Images\meowtoid.png"
 class IC_BrivGemFarm_Stats_Component
 {
     static SettingsPath := A_LineFile . "\..\Stats_Settings.json"
@@ -271,7 +271,7 @@ class IC_BrivGemFarm_Stats_Component
         GuiControlGet, pos, ICScriptHub:Pos, OnceRunGroupID
         local posImageX := posX + posW - 35
         local posImageY := posY + posH - 35
-        Gui, ICScriptHub:Add, Picture, x%posImageX% y%posImageY% h30 w30 vEmStatsImage, %g_EmStatsImage%
+        Gui, ICScriptHub:Add, Picture, x%posImageX% y%posImageY% h100 w100 vEmStatsImage, %g_EmStatsImage%
         GuiControlGet, pos, ICScriptHub:Pos, BrivGemFarmStatsID
         g_DownAlign := g_DownAlign + posH -5
         g_TabControlHeight := Max(g_TabControlHeight, 720)
