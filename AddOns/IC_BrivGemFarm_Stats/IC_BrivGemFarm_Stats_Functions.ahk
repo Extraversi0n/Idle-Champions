@@ -1,6 +1,6 @@
 #include %A_LineFile%\..\..\..\SharedFunctions\CLR.ahk
 
-global g_EmStatsImage := A_LineFile . "\..\..\..\Images\meowtoid.png"
+global g_EmStatsImage := A_LineFile . "\..\..\..\Images\meowtroid.png"
 class IC_BrivGemFarm_Stats_Component
 {
     static SettingsPath := A_LineFile . "\..\Stats_Settings.json"
