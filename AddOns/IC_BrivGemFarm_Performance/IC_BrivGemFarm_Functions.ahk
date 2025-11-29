@@ -571,13 +571,13 @@ class IC_BrivGemFarm_Class
         return
     }
 
-    ResetToPreviousLootString(returnVal := "")
+    ResetToPreviousLoopString(returnVal := "")
     {
         g_SharedData.LoopString := this.previousLootString
         return returnVal
     }
 
-    SetPreviousLootString(returnVal := "")
+    SetPreviousLoopString(returnVal := "")
     {
         this.previousLootString := g_SharedData.LoopString
         return returnVal
