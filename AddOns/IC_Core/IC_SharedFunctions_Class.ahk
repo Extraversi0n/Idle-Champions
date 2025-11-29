@@ -586,8 +586,8 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
         if (this.Memory.ReadCurrentZone() >= maxSwapArea)
             return false
         ;unbench briv if outside the 'Briv Jump Buffer' and a jump animation override isn't added to the list
-        else if (this.Memory.ReadTransitionOverrideSize() != 1)
-            return true
+        ; else if (this.Memory.ReadTransitionOverrideSize() != 1)
+        ;     return true
         return false
     }
 
