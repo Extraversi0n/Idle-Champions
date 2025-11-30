@@ -1195,7 +1195,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
         ; Formation 2 should NOT have familiars.
         if (shouldInclude AND this.Memory.GetFormationFamiliarsByFavorite(favorite) == "")
         {
-            ErrorMsg := "Warning: No famliars found in Favorite Formation " . favorite . " (" . FormationFavoriteHotkey[favorite] . "). It is highly recommended to use familiars for click damage."
+            ErrorMsg := "Warning: No familiars found in Favorite Formation " . favorite . " (" . FormationFavoriteHotkey[favorite] . "). It is highly recommended to use familiars for click damage."
             return ErrorMsg
         }
         if (!shouldInclude AND this.Memory.GetFormationFamiliarsByFavorite(favorite) != "")
