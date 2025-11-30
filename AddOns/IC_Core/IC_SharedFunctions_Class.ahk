@@ -1039,8 +1039,8 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
         if(currCount != testformation.Count())
             return false
         loop, %currCount%
-            if(currentFormation[A_Index] != -1 AND testformation[A_Index] != currentFormation[A_Index] AND (favorite == 2 AND testformation[A_Index] != (Tatyana := 97))) ; favorite 2 + tatyana = skip
-                return false
+            if(currentFormation[A_Index] != -1 AND testformation[A_Index] != currentFormation[A_Index]) ; not empty slot and champs don't match
+                return false ; !(favorite == 2 AND testformation[A_Index] != (Tatyana := 97)) ; favorite 2 + tatyana = skip
         return true
     }
 
