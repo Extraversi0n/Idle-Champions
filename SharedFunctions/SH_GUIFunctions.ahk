@@ -56,13 +56,12 @@ class GUIFunctions
     GetToolTipTarget(controlVariableName)
     {
         global
-        WinGet ICScriptHub_ID, ID, A
         GuiControl ICScriptHub:Focus, %controlVariableName%
+        WinGet ICScriptHub_ID, ID, A
         ControlGetFocus toolTipTarget, ahk_id %ICScriptHub_ID%
         return ICScriptHub_ID . toolTipTarget
     }
-
-     
+   
     ; Filters a combo box's list based on what is in the edit box. _List must be an unaltered original combobox list.
     FilterList(controlID, _List)
     {
@@ -201,18 +200,22 @@ class GUIFunctions
     ; Clears value from hwnd passed.
     ClearValueOfControl(hwnd)
     {
-         GuiControl, ICScriptHub:, %hwnd%, % ""
+        GuiControl, ICScriptHub:, %hwnd%, % ""
     }
 
     ; Sets the color/weight for subsequent text based on the theme.
     UseThemeTextColor(textType := "default", weight := 400)
     {  
+        global g_GlobalFontSize
         guiName := this.GUIName
         if(textType == "default")
             textType := "DefaultTextColor"
         ; if number, convert to hex
         textColor := (this.CurrentTheme[textType] * 1 == "") ? this.CurrentTheme[textType] : Format("{:#x}", this.CurrentTheme[textType])
-        Gui, %guiName%:Font, c%textColor% w%weight% s%g_GlobalFontSize%
+        if(g_GlobalFontSize != "")
+            Gui, %guiName%:Font, c%textColor% w%weight% s%g_GlobalFontSize%
+        else
+            Gui, %guiName%:Font, c%textColor% w%weight%
     }
 
     ; Sets the script GUI background color based on the theme.

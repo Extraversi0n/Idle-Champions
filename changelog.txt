@@ -1,3 +1,17 @@
+November 23, 2025
+    Fixed BPH disappearing when doing game restarts (e.g. FORT restart).
+    Fixed GUI elements in parts of BrivGemFarm.
+    Added test for using Rare (i.e. instead of Legendary/EGS)
+    Updated Steam v637 Imports.
+    Made BrivGemFarm minimally functional again. (BrivGemFarm should no longer NEED levelup to run anymore but it is still very highly recommended.)
+    Fixed QT transition detection. 
+
+November 19, 2025
+    Added checks for g_GlobalFontSize to prevent possible errors
+    Save default font size value if none exists (8).
+    Removed the ending run message (by user(s) request).
+    Fixed memory leak, one that especially affected offline stackers.
+
 November 15, 2025
     Fixed logic error in checking for EGS for EngineSettings.
     Fixed mikebaldi references.
@@ -6,7 +20,6 @@ November 15, 2025
     Fixed a possible recursion error location.
     Added new Imports and AreaHasArmoredEnemy and GetActiveEnemies to memory functions.
     Added FontSize to the possible settings in IC Script Hub's settings.json for the oldies.
-    
 
 November 10, 2025
     Fixed button locations in addon management.
