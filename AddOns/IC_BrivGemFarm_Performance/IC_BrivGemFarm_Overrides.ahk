@@ -60,8 +60,8 @@ class IC_BrivSharedFunctions_Class
     SetUserCredentials()
     {
         jsonObj := {}
-        jsonObj.UserID := this.UserID := this.Memory.ReadUserID()
-        jsonObj.UserHash := this.UserHash := this.Memory.ReadUserHash()
+        jsonObj.UserID := this.UserID := this.Memory.ReadUserID() ? this.Memory.ReadUserID() : this.UserID
+        jsonObj.UserHash := this.UserHash := this.Memory.ReadUserHash() ? his.Memory.ReadUserHash() : this.UserHash
         jsonObj.InstanceID  := this.InstanceID := this.Memory.ReadInstanceID()
         ; needed to know if there are enough chests to open using server calls
         jsonObj.TotalGems := this.TotalGems := this.Memory.ReadGems()
