@@ -142,6 +142,8 @@ class IC_BrivGemFarm_Class
     {
         static lowestHasteStacks := 9999999
         static firstRun := True
+        
+        g_SharedData.LoopString := "Reset Setup"
         g_PreviousZoneStartTime := A_TickCount
         g_SF.ToggleAutoProgress( 0, false, true )
         g_SharedData.StackFail := this.CheckForFailedConv()
@@ -183,6 +185,7 @@ class IC_BrivGemFarm_Class
 
     GemFarmDoZone(formationModron := "")
     {
+        g_SharedData.LoopString := "Main Loop - Do Zone"
         if (!(Mod( g_SF.Memory.ReadCurrentZone(), 5)) AND !(Mod( g_SF.Memory.ReadHighestZone(), 5)))
             this.GemFarmDoTouchedBoss()
         if (this.DoKeySpam AND g_BrivUserSettings[ "Fkeys" ] AND g_SF.AreChampionsUpgraded(formationModron)) 
@@ -221,6 +224,7 @@ class IC_BrivGemFarm_Class
     {
 
         static clickBonusAmount := 100
+        g_SharedData.LoopString := "Main Loop - Do Actions"
         ; static lastZone := 0
         if(this.DoneLeveling)
             return
@@ -414,7 +418,7 @@ class IC_BrivGemFarm_Class
         g_SharedData.LoopString := "Setting stack farm formation."
         isFormation2 := g_SF.Memory.ReadMostRecentFormationFavorite() == 2 AND IC_BrivGemFarm_Class.BrivFunctions.HasSwappedFavoritesThisRun
         if (!isFormation2)
-            if(g_SF.IsCurrentFormationLazy(stackFormation, 2))
+            if(g_SF.IsCurrentFormationLazy(stackFormation))
                 isFormation2 := True
         while (!isFormation2 AND ElapsedTime < 5000 )
         {
@@ -424,7 +428,7 @@ class IC_BrivGemFarm_Class
             ; Can't formation switch when under attack.
             isFormation2 := g_SF.Memory.ReadMostRecentFormationFavorite() == 2 AND IC_BrivGemFarm_Class.BrivFunctions.HasSwappedFavoritesThisRun
             if (!isFormation2)
-                if(g_SF.IsCurrentFormationLazy(stackFormation, 2))
+                if(g_SF.IsCurrentFormationLazy(stackFormation))
                     isFormation2 := True
             if (ElapsedTime > 1000 AND !isFormation2 && g_SF.Memory.ReadNumAttackingMonstersReached() > 10 || g_SF.Memory.ReadNumRangedAttackingMonsters())
                  ; not W formation or briv is benched
@@ -549,9 +553,22 @@ class IC_BrivGemFarm_Class
         g_SharedData.LoopString := "Stack Normal"
         this.LockLevelUp := False ; Allow leveling starting at 0 again for stacking champions.
         stackFormation := g_SF.GetFormationFKeys(g_SF.Memory.GetFormationByFavorite(2))
+        defaultLevelingKeys := g_SF.GetFormationFKeys(g_SF.Memory.GetFormationByFavorite(1))
+        levelingKeys := {}
+        ; add leveling keys not in stack formation - to level formation champs without leveling stacking team.
+        for k,v in defaultLevelingKeys
+        {
+            foundKey := false
+            for key,value in stackFormation
+                if (v == value)
+                    foundKey := True
+            if (!foundKey)
+                levelingKeys[k] := v
+        }
         while ( stacks < targetStacks AND ElapsedTime < maxOnlineStackTime )
         {
             this.DoBasicLeveling(stackFormation)
+            this.DoLeveling( levelingKeys ) ; Level non-stacking champs and clickers while stacking.
             g_SF.DirectedInput(,,"{w}")
             g_SF.FallBackFromBossZone()
             stacks := this.GetNumStacksFarmed()
@@ -569,6 +586,20 @@ class IC_BrivGemFarm_Class
         g_PreviousZoneStartTime := A_TickCount
         g_SF.FallBackFromZone()
         return
+    }
+
+    ; Presses leveling keys including click leveling.
+    DoLeveling( spam := "" )
+    {
+        ; two passes on leveling heroes before clickers.
+        this.DirectedInput(hold := True, release := True, spam*)
+        this.DirectedInput(hold := True, release := True, spam*) 
+        if(g_UserSettings[ "NoCtrlKeypress" ])
+            this.DirectedInput(,, "{ClickDmg}")
+        else { ; ctrl level clickers
+            this.DirectedInput(,release := 0, ["{RCtrl}","{ClickDmg}"]*) ;keysdown
+            this.DirectedInput(hold := 0,, ["{ClickDmg}","{RCtrl}"]*) ;keysup
+        }
     }
 
     ResetToPreviousLoopString(returnVal := "")
@@ -676,6 +707,7 @@ class IC_BrivGemFarm_Class
     ModronResetCheck()
     {
         global g_ScriptHubComs
+        g_SharedData.LoopString := "Modron Reset Check"
         modronResetTimeout := 75000
         if (!g_SF.WaitForModronReset(modronResetTimeout))
             g_SF.CheckifStuck(True)
