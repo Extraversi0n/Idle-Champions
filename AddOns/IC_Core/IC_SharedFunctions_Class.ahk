@@ -533,7 +533,7 @@ class IC_SharedFunctions_Class extends SH_SharedFunctions
             else if (this.BenchBrivConditions(this.Settings))
                 this.DoSwitchFormation(formationToSwapTo := 3)
         }
-        if(g_BrivGemFarm.IsInModronFormation AND !this.IsCurrentFormationLazy(g_SF.Memory.GetActiveModronFormation(), formationToSwapTo)) ; using 2 as stack formation ID to ignore taty being in modron.
+        if(g_BrivGemFarm.IsInModronFormation AND formationToSwapTo != "" AND !this.IsCurrentFormationLazy(g_SF.Memory.GetActiveModronFormation(), formationToSwapTo)) ; using 2 as stack formation ID to ignore taty being in modron.
             g_BrivGemFarm.IsInModronFormation := False
     }
 
